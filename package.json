@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "test:e2e:performance": "playwright test --config=playwright.performance.config.ts",
     "test:e2e:report": "playwright show-report"
   },
   "dependencies": {

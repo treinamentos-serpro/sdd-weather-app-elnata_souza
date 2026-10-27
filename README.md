@@ -74,7 +74,24 @@ pnpm check           # Biome (lint + formatação)
 pnpm test            # testes unitários (Vitest)
 pnpm test:coverage   # cobertura
 pnpm test:e2e        # testes E2E (Playwright)
+pnpm test:e2e:performance # benchmark isolado: Chromium, um worker, 100 buscas
 ```
+
+Os E2E usam servidor próprio na porta 4175 (`--strictPort`), sem reutilizar
+instâncias locais. Libere essa porta antes de executar. Chamadas externas sem
+mock são bloqueadas e fazem o teste falhar; o CSS do Google Fonts é substituído
+por uma resposta vazia, usando a fonte de fallback local.
+
+Execute o benchmark separadamente, sem outros testes concorrentes. A medição
+começa no evento de envio da busca e termina após verificar clima e cinco dias;
+exclui digitação, mas inclui a seleção automatizada da cidade e o overhead do
+runner. É uma medida ponta a ponta, não uma medição isolada de renderização.
+Para investigar instabilidade funcional: `pnpm test:e2e --repeat-each=10`.
+
+O projeto `mobile` usa WebKit (iPhone 13); instale Chromium e WebKit com
+`pnpm exec playwright install --with-deps chromium webkit`. Crashes do navegador
+devem ser investigados separadamente de timeouts/assertions; não são resolvidos
+adicionando esperas fixas ou aumentando retries.
 
 ---
 
